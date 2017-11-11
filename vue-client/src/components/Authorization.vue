@@ -1,67 +1,65 @@
 <template>
 <div>
-
   <div class='main'>
-
     <div class='content'>
       <div class='entry-group'>
-        <input class='entry-group-input' v-model="logon" />
-        <p class="entry-group-text">Логин</p>
+        <input class='entry-group-input' v-model='login' />
+        <p class='entry-group-text'>Логин</p>
       </div>
       <div class='entry-group'>
-        <input class='entry-group-input' v-model="password" />
-        <p class="entry-group-text">Пароль</p>
-        <button class="button-small">Забыли?</button>
+        <input class='entry-group-input' v-model='password' />
+        <p class='entry-group-text'>Пароль</p>
+        <button class='button-small'>Забыли?</button>
       </div>
-      <div class="underside">
-        <button class="underside-button-big" v-on:click="inGoing">ВОЙТИ</button>
-        <router-link class="underside-link" to="/registration">Зарегистрироваться</router-link>
-
+      <div class='mistake'>{{ message }}</div>
+      <div class='underside'>
+        <button class='underside-button-big' v-on:click='inGoing'>ВОЙТИ</button>
+        <router-link class='underside-link' to='/registration'>Зарегистрироваться</router-link>
       </div>
-
     </div>
   </div>
-
 </div>
 </template>
 
 <script>
 export default {
   name: 'Authorization',
-  data() {
+  data () {
     return {
-      logon: 'anonim',
-      password: 'zzzzzz'
+      login: 'anonim',
+      password: 'zzzzzz',
+      message: ''
     }
-
   },
   methods: {
-    inGoing() {
+    inGoing () {
       var vm = this
       var pars = JSON.stringify({
-        logon: this.logon,
-        password: this.password
+        uname: this.login,
+        psw: this.password
       })
-      fetch('https://test-task-api.insirion.ru/user/authorization', {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: pars
-
-        })
-        .then(function(response) {
+      fetch('/logon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: pars
+      })
+        .then(function (response) {
           console.log('ответ от сервера')
           return response.json()
-
         })
-        .then(function(data) {
+        .then(function (data) {
           console.log(data)
-          console.log(data.token)
-          localStorage.setItem('token', data.token)
-          vm.$router.push('/cabinet')
+          if (data.error) {
+            vm.message = data.error
+          } else {
+            sessionStorage.setItem('token', data.token)
+            sessionStorage.setItem('userId', data.userId)
+            console.log(data.token)
+            vm.$router.push('/cabinet')
+          }
         })
-
     }
   }
 }
@@ -92,13 +90,11 @@ export default {
 
 .content {
   width: 300px;
-  height: 300px;
+  height: 350px;
   display: block;
   margin: auto;
   margin-top: 40vh;
 }
-
-
 
 .entry-group-text {
   width: 82px;
@@ -161,6 +157,20 @@ input:focus~p {
   right: 10px;
 }
 
+.mistake {
+  width: 260px;
+  height: 30px;
+  display: block;
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: auto;
+  color: #fff;
+}
+
 .underside {
   width: 260px;
   margin: auto;
@@ -197,6 +207,4 @@ input:focus~p {
   margin: auto;
   margin-top: 37px;
 }
-
-
 </style>
