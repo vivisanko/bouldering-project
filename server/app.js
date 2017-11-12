@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var logon = require('./routes/logon');
+var checkin = require('./routes/checkin');
 var trapeziaPlace = require('./db/data.js');
 
 var app = express();
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, '../vue-client/dist')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/logon', logon);
+app.use('/checkin', checkin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

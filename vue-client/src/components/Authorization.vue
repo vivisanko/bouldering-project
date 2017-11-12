@@ -3,8 +3,8 @@
   <div class='main'>
     <div class='content'>
       <div class='entry-group'>
-        <input class='entry-group-input' v-model='login' />
-        <p class='entry-group-text'>Логин</p>
+        <input class='entry-group-input' v-model='email' />
+        <p class='entry-group-text'>e-mail</p>
       </div>
       <div class='entry-group'>
         <input class='entry-group-input' v-model='password' />
@@ -26,7 +26,7 @@ export default {
   name: 'Authorization',
   data () {
     return {
-      login: 'anonim',
+      email: 'anonim@gmail.com',
       password: 'zzzzzz',
       message: ''
     }
@@ -35,7 +35,7 @@ export default {
     inGoing () {
       var vm = this
       var pars = JSON.stringify({
-        uname: this.login,
+        email: this.email,
         psw: this.password
       })
       fetch('/logon', {

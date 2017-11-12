@@ -67,12 +67,13 @@ export default {
       }
       var vm = this
       var parsel = JSON.stringify({
+        logon: this.logon,
         email: this.email,
         password: this.password,
         phone: this.phone
       })
       console.log(parsel)
-      fetch('https://test-task-api.insirion.ru/user/registration', {
+      fetch('/checkin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -91,8 +92,10 @@ export default {
         })
         .then(function(data) {
           console.log(data)
-          if (data.ok !== 1) {
-            throw new Error('ошибка при регистрации')
+          if (data.error) {
+            console.log(data);
+            vm.message = data.error;
+            throw data
           } else {
             vm.$router.push('/authorization')
           }

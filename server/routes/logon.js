@@ -14,12 +14,12 @@ router.post('/', function (req, res, next) {
         console.log(req);
         console.log(req.body);
         var person = trapeziaPlace.users.filter(
-            (it) => it.name === req.body.uname);
+            (it) => it.email === req.body.email);
         console.log(person);
         if (person.length === 0) {
             console.log('пользователь не нашелся');
 
-            res.jsonp({error: 'Пользователь с таким логином не зарегистрирован'});
+            res.jsonp({error: 'Пользователь с таким e-mail не зарегистрирован'});
         } else {
             if (person[0].password !== req.body.psw) {
                 res.jsonp({error: 'Неверный пароль'});
