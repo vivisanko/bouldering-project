@@ -25,13 +25,13 @@ router.post('/', function (req, res, next) {
          "name": req.body.logon,
          "email": req.body.email,
          "password": req.body.password,
-          "phone": req.body.phone,
          "experiens": "",
          "score": null,
          "historyRoutes": [],
          "historyMeetUps": [],
          "duration": ""
        };
+       trapeziaPlace.usersId.push(nextId);
        var output = JSON.stringify(trapeziaPlace.users);
        fs.writeFileSync('./db/profile.json', output);
        res.jsonp({success: 'Пользователь успешно зарегистрирован'});

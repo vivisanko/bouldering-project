@@ -24,7 +24,7 @@
 <script>
 export default {
   name: 'Authorization',
-  data () {
+  data() {
     return {
       email: 'anonim@gmail.com',
       password: 'zzzzzz',
@@ -32,33 +32,43 @@ export default {
     }
   },
   methods: {
-    inGoing () {
+    inGoing() {
       var vm = this
       var pars = JSON.stringify({
         email: this.email,
         psw: this.password
       })
       fetch('/logon', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: pars
-      })
-        .then(function (response) {
-          console.log('ответ от сервера')
-          return response.json()
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: pars
         })
-        .then(function (data) {
+        .then(function(response) {
+          console.log('ответ от сервера')
+          if (response.status === 200) {
+            return response.json()
+          } else {
+            throw new Error('ошибка ' + response.status)
+          }
+        }, function(error) {
+          throw error
+        })
+        .then(function(data) {
           console.log(data)
           if (data.error) {
-            vm.message = data.error
+            vm.message = data.error;
+            throw data
           } else {
             sessionStorage.setItem('token', data.token)
             sessionStorage.setItem('userId', data.userId)
             console.log(data.token)
             vm.$router.push('/cabinet')
           }
+        })
+        .catch(function genericError(error) {
+          console.log(error)
         })
     }
   }

@@ -15,10 +15,6 @@
         <p class="entry-group-text">Повторите пароль</p>
       </div>
       <div class='entry-group'>
-        <input class="entry-group-input" v-model="phone" />
-        <p class="entry-group-text">Введите телефон</p>
-      </div>
-      <div class='entry-group'>
         <input class="entry-group-input" v-model="email" />
         <p class="entry-group-text">Введите ваш e-mail</p>
       </div>
@@ -40,7 +36,6 @@ export default {
       logon: '',
       passwordOriginal: '',
       password: '',
-      phone: '+375 (XX) XXXXXX',
       email: '',
       message: '',
       verification: false
@@ -48,7 +43,7 @@ export default {
   },
   methods: {
     makeVerification: function() {
-      if (this.logon.length < 1 || this.passwordOriginal.length < 1 || this.password.length < 1 || this.phone.length < 1 || this.email.length < 1) {
+      if (this.logon.length < 1 || this.passwordOriginal.length < 1 || this.password.length < 1 || this.email.length < 1) {
         this.message = 'ВНИМАНИЕ: Для регистрации заполните все поля формы'
         this.verification = false
       } else {
@@ -69,8 +64,7 @@ export default {
       var parsel = JSON.stringify({
         logon: this.logon,
         email: this.email,
-        password: this.password,
-        phone: this.phone
+        password: this.password
       })
       console.log(parsel)
       fetch('/checkin', {
@@ -93,7 +87,6 @@ export default {
         .then(function(data) {
           console.log(data)
           if (data.error) {
-            console.log(data);
             vm.message = data.error;
             throw data
           } else {
@@ -133,7 +126,7 @@ export default {
 
 .content {
   width: 300px;
-  height: 420px;
+  height: 370px;
   display: block;
   margin: auto;
   margin-top: 40vh;

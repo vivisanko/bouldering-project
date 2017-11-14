@@ -10,7 +10,6 @@ console.log('loaded: logon.js');
 /* POST logon listing. */
 router.post('/', function (req, res, next) {
         console.log('logon запрос');
-
         console.log(req);
         console.log(req.body);
         var person = trapeziaPlace.users.filter(
@@ -26,6 +25,7 @@ router.post('/', function (req, res, next) {
                 console.log('пароль не верный')
             } else {
                 var token = makeToken(person[0].id);
+                console.log (token);
                 var answer = {token: token, userId: person[0].id};
                 var ind = trapeziaPlace.usersId.indexOf(person[0].id);
                 console.log(ind);
@@ -33,10 +33,9 @@ router.post('/', function (req, res, next) {
                 console.log(trapeziaPlace.users[ind].token);
                 var output = JSON.stringify(trapeziaPlace.users);
                 fs.writeFileSync('./db/profile.json', output);
-                res.json(answer);
+                res.jsonp(answer);
             }
         }
-
     }
 );
 

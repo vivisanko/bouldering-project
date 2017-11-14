@@ -7,9 +7,12 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+
+var trapeziaPlace = require('./db/data.js');
+
 var logon = require('./routes/logon');
 var checkin = require('./routes/checkin');
-var trapeziaPlace = require('./db/data.js');
+
 
 var app = express();
 
