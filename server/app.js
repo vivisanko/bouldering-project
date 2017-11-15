@@ -12,7 +12,7 @@ var trapeziaPlace = require('./db/data.js');
 
 var logon = require('./routes/logon');
 var checkin = require('./routes/checkin');
-
+var personal = require('./routes/personal');
 
 var app = express();
 
@@ -33,6 +33,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/logon', logon);
 app.use('/checkin', checkin);
+app.use('/personal', personal);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
