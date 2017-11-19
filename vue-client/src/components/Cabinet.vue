@@ -192,7 +192,7 @@ p {
 }
 .basic {
   width: 100%;
-  background-color: #000;
+  background-color: #02090f;
   display: flex;
   flex-wrap: wrap;
 }
