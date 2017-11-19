@@ -7,7 +7,7 @@
         <p class='entry-group-text'>e-mail</p>
       </div>
       <div class='entry-group'>
-        <input class='entry-group-input' v-model='password' />
+        <input class='entry-group-input' type = "password" v-model='password' />
         <p class='entry-group-text'>Пароль</p>
         <button class='button-small'>Забыли?</button>
       </div>
@@ -24,15 +24,15 @@
 <script>
 export default {
   name: 'Authorization',
-  data() {
+  data () {
     return {
-      email: 'anonim@gmail.com',
-      password: 'zzzzzz',
+      email: 'vivisanko@gmail.com',
+      password: '1111',
       message: ''
     }
   },
   methods: {
-    inGoing() {
+    inGoing () {
       var vm = this
       var pars = JSON.stringify({
         email: this.email,
@@ -45,20 +45,20 @@ export default {
           },
           body: pars
         })
-        .then(function(response) {
+        .then(function (response) {
           console.log('ответ от сервера')
           if (response.status === 200) {
             return response.json()
           } else {
             throw new Error('ошибка ' + response.status)
           }
-        }, function(error) {
+        }, function (error) {
           throw error
         })
-        .then(function(data) {
+        .then(function (data) {
           console.log(data)
           if (data.error) {
-            vm.message = data.error;
+            vm.message = data.error
             throw data
           } else {
             sessionStorage.setItem('token', data.token)
@@ -67,7 +67,7 @@ export default {
             vm.$router.push('/cabinet')
           }
         })
-        .catch(function genericError(error) {
+        .catch(function genericError (error) {
           console.log(error)
         })
     }

@@ -7,11 +7,11 @@
         <p class="entry-group-text">Введите логин</p>
       </div>
       <div class='entry-group'>
-        <input class="entry-group-input" v-model="passwordOriginal" />
+        <input class="entry-group-input" type = "password" v-model="passwordOriginal" />
         <p class="entry-group-text">Придумайте пароль</p>
       </div>
       <div class='entry-group'>
-        <input class="entry-group-input" v-model="password" />
+        <input class="entry-group-input" type = "password" v-model="password" />
         <p class="entry-group-text">Повторите пароль</p>
       </div>
       <div class='entry-group'>
@@ -31,7 +31,7 @@
 <script>
 export default {
   name: 'Registration',
-  data() {
+  data () {
     return {
       logon: '',
       passwordOriginal: '',
@@ -42,7 +42,7 @@ export default {
     }
   },
   methods: {
-    makeVerification: function() {
+    makeVerification: function () {
       if (this.logon.length < 1 || this.passwordOriginal.length < 1 || this.password.length < 1 || this.email.length < 1) {
         this.message = 'ВНИМАНИЕ: Для регистрации заполните все поля формы'
         this.verification = false
@@ -55,7 +55,7 @@ export default {
         }
       }
     },
-    doRegistration: function() {
+    doRegistration: function () {
       this.makeVerification()
       if (!this.verification) {
         return
@@ -74,26 +74,26 @@ export default {
           },
           body: parsel
         })
-        .then(function(response) {
+        .then(function (response) {
           console.log('ответ от сервера')
           if (response.status === 200) {
             return response.json()
           } else {
             throw new Error('ошибка ' + response.status)
           }
-        }, function(error) {
+        }, function (error) {
           throw error
         })
-        .then(function(data) {
+        .then(function (data) {
           console.log(data)
           if (data.error) {
-            vm.message = data.error;
+            vm.message = data.error
             throw data
           } else {
             vm.$router.push('/authorization')
           }
         })
-        .catch(function genericError(error) {
+        .catch(function genericError (error) {
           console.log(error)
         })
     }

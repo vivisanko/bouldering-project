@@ -7,6 +7,14 @@
       <h1>{{ item.name }}</h1>
       <p>{{ item.description }}</p>
     </div>
+    <div class="basic">
+      <div class="basic-left">
+      <div v-for="option in options">
+        <button v-on:click="showValue" v-bind:id="option.value">{{ option.text }}</button>
+      </div>
+    </div>
+    <div class="basic-right"></div>
+    </div>
   </div>
 </div>
 </template>
@@ -15,19 +23,52 @@
 <script>
 export default {
   name: 'Cabinet',
-  data() {
+  data () {
     return {
       selected: 'border-type-active',
       usual: 'border-type-usual',
       avaliableOptions: [],
+      options: [{
+          text: 'Профиль',
+          value: 'profile'
+        },
+        {
+          text: 'Рейтинг',
+          value: 'rating'
+        },
+        {
+          text: 'Техника скалолазания',
+          value: 'theory'
+        },
+        {
+          text: 'План тренировки',
+          value: 'coaching'
+        },
+        {
+          text: 'Маршруты',
+          value: 'suitableroute'
+        },
+        {
+          text: 'Пройденные маршруты',
+          value: 'passedroute'
+        },
+        {
+          text: 'Случайный маршрут',
+          value: 'randomroute'
+        },
+        {
+          text: 'Выход',
+          value: 'exit'
+        }
+      ],
       message: ''
     }
   },
-  created: function() {
+  created: function () {
     this.getData()
   },
   methods: {
-    getData: function() {
+    getData: function () {
       var vm = this
       var userToken = sessionStorage.getItem('token')
       var uId = sessionStorage.getItem('userId')
@@ -35,7 +76,7 @@ export default {
       userHeaders.set('token', userToken)
       userHeaders.set('userId', uId)
       console.log(userToken)
-      console.log(typeof(userToken))
+      console.log(typeof (userToken))
 
       var userInit = {
         method: 'GET',
@@ -43,30 +84,34 @@ export default {
       }
       console.log(userInit)
       fetch('/personal', userInit)
-        .then(function(response) {
+        .then(function (response) {
           console.log(response)
           if (response.status === 200) {
             return response.json()
           } else {
             throw new Error('ошибка ' + response.status)
           }
-        }, function(error) {
+        }, function (error) {
           throw error
         })
-        .then(function(data) {
+        .then(function (data) {
           if (data.error) {
-            vm.message = data.error;
+            vm.message = data.error
             throw data
           } else {
-            data.forEach(function(item) {
+            data.forEach(function (item) {
               vm.avaliableOptions.push(item)
             })
             console.log(vm.avaliableOptions)
           }
         })
-        .catch(function genericError(error) {
+        .catch(function genericError (error) {
           console.log(error)
         })
+    },
+    showValue: function (event) {
+      console.log(event.target)
+      console.log(event.target.id)
     }
   }
 }
@@ -75,13 +120,14 @@ export default {
 <style scoped>
 .main-base {
   width: 100%;
-  min-height: 90vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   align-content: center;
   flex-wrap: wrap;
+  background-color: #4b4b4b;
 }
 
 .border-type-usual {
@@ -143,5 +189,40 @@ p {
   margin: auto;
   margin-top: 10px;
   padding: 0px;
+}
+.basic {
+  width: 100%;
+  background-color: #000;
+  display: flex;
+  flex-wrap: wrap;
+}
+.basic-left {
+  width: 240px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.basic-right {
+  background-image: url("../assets/mountains.png");
+  background-origin: content-box;
+  background-size: contain;
+  width: calc(100% - 240px - 20px);
+  min-width: 300px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+button {
+  background-color: #4b4b4b;
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  color: #fff;
+  width: 200px;
+  height: 50px;
+  margin-top: 20px;
 }
 </style>
