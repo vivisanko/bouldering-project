@@ -7,22 +7,25 @@ var fs = require('fs');
 
 var router = express.Router();
 
-console.log('loaded: personal.js');
+console.log('loaded: userinfo.js');
 /* GET personal listing. */
 router.get('/', function (req, res, next) {
-        console.log('personal запрос');
+        console.log('userinfo запрос');
         console.log(req.headers.token);
            console.log(req.headers.userid);
+           console.log(req.headers.userinfo);
            var index = validator(req.headers.token, Number(req.headers.userid));
            if (index!==null) {
                    var essence = [{
                      name: trapeziaPlace.users[index].name,
-                     img: '../../server/public/images/rock.png',
-                     description:  trapeziaPlace.users[index].experiens
+                     score: trapeziaPlace.users[index].score,
+                     experiens:  trapeziaPlace.users[index].experiens,
+                     historyRoutes: trapeziaPlace.users[index].historyRoutes,
+                     duration:  trapeziaPlace.users[index].duration
                }
              ];
                res.json(essence);
-           } else res.json({error: 'Вы не прошли авторизацию'});
+           } else res.json({error: 'Пройдите авторизацию'});
        });
 
        module.exports = router;

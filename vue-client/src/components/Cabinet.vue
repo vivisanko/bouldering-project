@@ -10,7 +10,7 @@
     <div class="basic">
       <div class="basic-left">
       <div v-for="option in options">
-        <button v-on:click="showValue" v-bind:id="option.value">{{ option.text }}</button>
+        <button v-on:click="getPersonalInfo" v-bind:id="option.value">{{ option.text }}</button>
       </div>
     </div>
     <div class="basic-right"></div>
@@ -109,9 +109,42 @@ export default {
           console.log(error)
         })
     },
-    showValue: function (event) {
-      console.log(event.target)
-      console.log(event.target.id)
+    getPersonalInfo: function (event) {
+    var info = event.target.id
+    var vm = this
+    var userToken = sessionStorage.getItem('token')
+    var uId = sessionStorage.getItem('userId')
+    var userHeaders = new Headers()
+    userHeaders.set('token', userToken)
+    userHeaders.set('userId', uId)
+    userHeaders.set('userInfo', info)
+    var userInit = {
+      method: 'GET',
+      headers: userHeaders
+    }
+    console.log(userInit)
+    fetch('/userinfo', userInit)
+      .then(function (response) {
+        console.log(response)
+        if (response.status === 200) {
+          return response.json()
+        } else {
+          throw new Error('ошибка ' + response.status)
+        }
+      }, function (error) {
+        throw error
+      })
+      .then(function (data) {
+        if (data.error) {
+          vm.message = data.error
+          throw data
+        } else {
+          console.log(data)
+        }
+      })
+      .catch(function genericError (error) {
+        console.log(error)
+      })
     }
   }
 }
