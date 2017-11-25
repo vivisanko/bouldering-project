@@ -2,18 +2,17 @@
 <div>
   <div>{{ message }} </div>
   <div class="main-base">
-    <div v-for="item in avaliableOptions" v-bind:item="item" v-bind:class="[{selected : selected == 'item'}, usual]" v-on:click="selected = item">
-      <img v-bind:src=" item.img " />
-      <h1>{{ item.name }}</h1>
-      <p>{{ item.description }}</p>
+    <div class="selected">
+      <img v-bind:src=" userAva " />
+      <h1>{{ userName }}</h1>
     </div>
     <div class="basic">
       <div class="basic-left">
-      <div v-for="option in options">
-        <button v-on:click="getPersonalInfo" v-bind:id="option.value">{{ option.text }}</button>
+        <div v-for="option in options">
+          <button v-on:click="getPersonalInfo" v-bind:id="option.value">{{ option.text }}</button>
+        </div>
       </div>
-    </div>
-    <div class="basic-right"></div>
+      <div class="basic-right"></div>
     </div>
   </div>
 </div>
@@ -23,11 +22,12 @@
 <script>
 export default {
   name: 'Cabinet',
-  data () {
+  data() {
     return {
       selected: 'border-type-active',
       usual: 'border-type-usual',
-      avaliableOptions: [],
+      userName: '',
+      userAva: '',
       options: [{
           text: 'Профиль',
           value: 'profile'
@@ -64,11 +64,11 @@ export default {
       message: ''
     }
   },
-  created: function () {
+  created: function() {
     this.getData()
   },
   methods: {
-    getData: function () {
+    getData: function() {
       var vm = this
       var userToken = sessionStorage.getItem('token')
       var uId = sessionStorage.getItem('userId')
@@ -76,7 +76,7 @@ export default {
       userHeaders.set('token', userToken)
       userHeaders.set('userId', uId)
       console.log(userToken)
-      console.log(typeof (userToken))
+      console.log(typeof(userToken))
 
       var userInit = {
         method: 'GET',
@@ -84,67 +84,67 @@ export default {
       }
       console.log(userInit)
       fetch('/personal', userInit)
-        .then(function (response) {
+        .then(function(response) {
+          if (response.status === 200) {
+            console.log(response)
+            return response.json()
+          } else {
+            throw new Error('ошибка ' + response.status)
+          }
+        }, function(error) {
+          throw error
+        })
+        .then(function(data) {
+          if (data.error) {
+            vm.message = data.error
+            throw data
+          } else {
+            vm.userName = data.uname
+            console.log(vm.userName)
+            vm.userAva = data.uavatar
+            console.log(vm.userAva)
+          }
+        })
+        .catch(function genericError(error) {
+          console.log(error)
+        })
+    },
+    getPersonalInfo: function(event) {
+      var info = event.target.id
+      var vm = this
+      var userToken = sessionStorage.getItem('token')
+      var uId = sessionStorage.getItem('userId')
+      var userHeaders = new Headers()
+      userHeaders.set('token', userToken)
+      userHeaders.set('userId', uId)
+      userHeaders.set('userInfo', info)
+      var userInit = {
+        method: 'GET',
+        headers: userHeaders
+      }
+      console.log(userInit)
+      fetch('/userinfo', userInit)
+        .then(function(response) {
           console.log(response)
           if (response.status === 200) {
             return response.json()
           } else {
             throw new Error('ошибка ' + response.status)
           }
-        }, function (error) {
+        }, function(error) {
           throw error
         })
-        .then(function (data) {
+        .then(function(data) {
           if (data.error) {
             vm.message = data.error
             throw data
           } else {
-            data.forEach(function (item) {
-              vm.avaliableOptions.push(item)
-            })
-            console.log(vm.avaliableOptions)
+            console.log(data)
           }
         })
-        .catch(function genericError (error) {
+        .catch(function genericError(error) {
           console.log(error)
         })
-    },
-    getPersonalInfo: function (event) {
-    var info = event.target.id
-    var vm = this
-    var userToken = sessionStorage.getItem('token')
-    var uId = sessionStorage.getItem('userId')
-    var userHeaders = new Headers()
-    userHeaders.set('token', userToken)
-    userHeaders.set('userId', uId)
-    userHeaders.set('userInfo', info)
-    var userInit = {
-      method: 'GET',
-      headers: userHeaders
-    }
-    console.log(userInit)
-    fetch('/userinfo', userInit)
-      .then(function (response) {
-        console.log(response)
-        if (response.status === 200) {
-          return response.json()
-        } else {
-          throw new Error('ошибка ' + response.status)
-        }
-      }, function (error) {
-        throw error
-      })
-      .then(function (data) {
-        if (data.error) {
-          vm.message = data.error
-          throw data
-        } else {
-          console.log(data)
-        }
-      })
-      .catch(function genericError (error) {
-        console.log(error)
-      })
     }
   }
 }
@@ -223,12 +223,14 @@ p {
   margin-top: 10px;
   padding: 0px;
 }
+
 .basic {
   width: 100%;
   background-color: #02090f;
   display: flex;
   flex-wrap: wrap;
 }
+
 .basic-left {
   width: 240px;
   height: 600px;
@@ -236,6 +238,7 @@ p {
   flex-direction: column;
   justify-content: center;
 }
+
 .basic-right {
   background-image: url("../assets/mountains.png");
   background-origin: content-box;
