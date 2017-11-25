@@ -12,7 +12,7 @@
           <button v-on:click="getPersonalInfo" v-bind:id="option.value">{{ option.text }}</button>
         </div>
       </div>
-      <div class="basic-right"></div>
+      <router-view/>
     </div>
   </div>
 </div>
@@ -111,6 +111,8 @@ export default {
     },
     getPersonalInfo: function(event) {
       var info = event.target.id
+      console.log(info);
+      this.$router.push('/cabinet/' + info)
       var vm = this
       var userToken = sessionStorage.getItem('token')
       var uId = sessionStorage.getItem('userId')
@@ -237,16 +239,6 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.basic-right {
-  background-image: url("../assets/mountains.png");
-  background-origin: content-box;
-  background-size: contain;
-  width: calc(100% - 240px - 20px);
-  min-width: 300px;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 button {

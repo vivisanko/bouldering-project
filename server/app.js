@@ -36,6 +36,7 @@ app.use('/users', users);
 app.use('/logon', logon);
 app.use('/checkin', checkin);
 app.use('/personal', personal);
+
 app.use('/userinfo', userinfo);
 
 // catch 404 and forward to error handler
