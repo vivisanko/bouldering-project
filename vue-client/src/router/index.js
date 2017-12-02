@@ -38,15 +38,15 @@ export default new Router({
       name: 'PersonalCabinet',
       component: Cabinet,
       children: [
-             { path: '/cabinet', component: UserHome },
-             { path: '/cabinet/profile', component: UserProfile },
-             { path: '/cabinet/rating', component: UserRating },
-             { path: '/cabinet/theory', component: UserTheory },
-             { path: '/cabinet/coaching', component: UserCoaching },
-             { path: '/cabinet/suitableroute', component: UserSuitableroute },
-             { path: '/cabinet/passedroute', component: UserPassedroute },
-             { path: '/cabinet/randomroute', component: UserRandomroute },
-             { path: '/cabinet/exit', component: UserExit }]
+             { path: '', component: UserHome },
+             { path: 'profile', component: UserProfile },
+             { path: 'rating', component: UserRating },
+             { path: 'theory', component: UserTheory },
+             { path: 'coaching', component: UserCoaching },
+             { path: 'suitableroute', component: UserSuitableroute },
+             { path: 'passedroute', component: UserPassedroute },
+             { path: 'randomroute', component: UserRandomroute },
+             { path: 'exit', component: UserExit }]
     }
   ]
 })

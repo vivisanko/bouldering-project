@@ -1,18 +1,20 @@
 <template>
 <div>
-  <div>{{ message }} </div>
-  <div class="main-base">
-    <div class="selected">
-      <img v-bind:src=" userAva " />
-      <h1>{{ userName }}</h1>
-    </div>
-    <div class="basic">
-      <div class="basic-left">
+  <div class="main">
+    <div class="header">{{ message }} </div>
+    <div class="center">
+      <div class="sidebar">
+        <div class="maininfo">
+          <img v-bind:src=" userAva " />
+          <h1>{{ userName }}</h1>
+        </div>
         <div v-for="option in options">
           <button v-on:click="getPersonalInfo" v-bind:id="option.value">{{ option.text }}</button>
         </div>
       </div>
-      <router-view/>
+      <div class='content'>
+        <router-view/>
+      </div>
     </div>
   </div>
 </div>
@@ -76,7 +78,7 @@ export default {
       userHeaders.set('token', userToken)
       userHeaders.set('userId', uId)
       console.log(userToken)
-      console.log(typeof(userToken))
+      console.log(typeof (userToken))
 
       var userInit = {
         method: 'GET',
@@ -111,7 +113,7 @@ export default {
     },
     getPersonalInfo: function(event) {
       var info = event.target.id
-      console.log(info);
+      console.log(info)
       this.$router.push('/cabinet/' + info)
       var vm = this
       var userToken = sessionStorage.getItem('token')
@@ -153,52 +155,15 @@ export default {
 </script>
 
 <style scoped>
-.main-base {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  flex-wrap: wrap;
-  background-color: #4b4b4b;
-}
 
-.border-type-usual {
-  width: 160px;
-  height: 192px;
-  border-radius: 10px;
-  background-color: #ffffff;
-  box-shadow: 0 0 20px 0 rgba(89, 159, 246, 0.3);
-  margin: 20px 20px 20px 20px;
-  text-align: center;
-  transition: all 0.5s ease-out 0.5s;
-}
-
-.border-type-active {
-  width: 160px;
-  height: 192px;
-  border-radius: 10px;
-  background-color: #ffffff;
-  box-shadow: 0 0 20px 0 rgba(89, 159, 246, 0.6);
-  margin: 20px 20px 20px 20px;
-  text-align: center;
-  transition: all 0.5s ease-out 0.5s;
-}
-
-.border-type-usual:hover>img {
-  transform: scale(1.2);
-}
-
-img {
+.maininfo img {
+  margin-top: 20px;
   width: 160px;
   height: 95px;
   transition: all 0.5s ease-out 0.5s;
-  transform-origin: 50% 100%;
 }
 
-h1 {
+.maininfo h1 {
   display: inline-block;
   width: auto;
   height: 21px;
@@ -212,33 +177,51 @@ h1 {
   padding: 0px;
 }
 
-p {
-  display: inline-block;
-  width: 140px;
-  height: 36px;
-  font-family: 'Fira Sans', sans-serif;
-  font-size: 12px;
-  line-height: 1.5;
-  text-align: center;
-  color: #999999;
-  margin: auto;
-  margin-top: 10px;
-  padding: 0px;
-}
-
-.basic {
-  width: 100%;
-  background-color: #02090f;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.basic-left {
-  width: 240px;
-  height: 600px;
+.main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  flex-basis: 100%;
+  background-color: #02090f;
+  min-height: 100vh;
+}
+
+.header {
+flex-grow: 1;
+  background-color: #02090f;
+  color: #fff;
+}
+
+.center {
+  flex-grow: 5;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: #02090f;
+}
+
+.sidebar {
+  flex-grow: 1;
+  height: 720px;
+  align-self: flex-start;
+}
+
+.content {
+  flex-grow: 11;
+  padding-top: 20px;
+  align-self: stretch;
+  min-width: 435px;
+}
+
+.maininfo {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 0 20px 0 rgba(89, 159, 246, 0.3);
+  margin-top: 20px;
+  text-align: center;
+  transition: all 0.5s ease-out 0.5s;
 }
 
 button {
@@ -250,7 +233,14 @@ button {
   text-align: center;
   color: #fff;
   width: 200px;
-  height: 50px;
+  height: 40px;
   margin-top: 20px;
+}
+@media (max-width:650px) {
+    .center {flex-wrap: wrap;}
+    /*overflow-x: hidden;}*/
+.content {min-width: 300px;}
+  button {display: inline-block;}
+
 }
 </style>

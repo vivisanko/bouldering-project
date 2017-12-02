@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="basic-right"></div>
+  <div class="heart"></div>
 </div>
 </template>
 
@@ -12,13 +12,20 @@ export default {
 
 
 <style scoped>
-.basic-right {
+.heart {
+  margin: 0px;
   background-image: url("../assets/mountains.png");
   background-origin: content-box;
   background-size: contain;
-  width: 600px;
-  height: 400px;
+  width: 100%;
+  height: 680px;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: bottom;
+}
+@media (max-width:516px) {
+  .heart {
+    background-position: top;
+  max-height: 400px;
+  }
 }
 </style>
